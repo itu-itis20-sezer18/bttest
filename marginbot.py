@@ -4,7 +4,7 @@ import threading
 import datetime
 import time
 import sys
-sys.setrecursionlimit(10000)
+sys.setrecursionlimit(1000000)
 
 
 min_of_fifteen = 999999
@@ -19,7 +19,7 @@ from binance.helpers import round_step_size
 
 client = Client(api_key, api_secret)
 
-client.futures_change_leverage(symbol="XLMUSDT", leverage=5)
+client.futures_change_leverage(symbol="XLMUSDT", leverage=10)
 
 
 def get_tick_size(symbol: str) -> float:
@@ -87,7 +87,7 @@ def get_buying_price():
         if(last_order["side"] == "SELL"):
             return
         last_order_price = last_order["price"]
-        last_order_price = (float(last_order_price)*1.008)
+        last_order_price = (float(last_order_price)*1.004)
         print("Sell order is creating at price: ",last_order_price)
         last_order_price = get_rounded_price("XLMUSDT", last_order_price)
         order = client.futures_create_order(
@@ -96,7 +96,7 @@ def get_buying_price():
         type=Client.ORDER_TYPE_LIMIT,
         timeInForce='GTC',
         price=str(last_order_price),
-        quantity=80)
+        quantity=5000)
 
 
 
@@ -112,7 +112,7 @@ def buy(price):
     type=Client.ORDER_TYPE_LIMIT,
     timeInForce='GTC',
     price=str(price),
-    quantity=80)
+    quantity=5000)
     #create sell order
     
 

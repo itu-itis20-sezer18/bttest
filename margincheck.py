@@ -12,7 +12,7 @@ count = 0
 api_key = "LFJ3zBLrPGgEAkYRurlCFsUtoHloLy7H7njhbG4ADW5BA6rsTXCZnuBNFEGDvN2m"
 api_secret = "E3bvOzjJzDpT2I3Yw4DW41KKlFdNkgEP0b0LxUxOCLiddOjvzOaZlyf1ukZ6Sq6C"
 from binance import Client, ThreadedWebsocketManager, ThreadedDepthCacheManager
-client = Client(api_key, api_secret,testnet=True)
+client = Client(api_key, api_secret)
 
 
 boolean = False
@@ -39,7 +39,7 @@ def buy(price):
 #buy(35070.0)
 #orders = client.get_open_orders(symbol='BTCUSDT')
 #client.cancel_order(symbol="BTCUSDT",orderId='9566572')
-print(client.futures_get_open_orders())
+print(client.futures_get_all_orders()[-1])
 #print(client.futures_account_balance(symbol="BTCUSDT"))
 
 # def get_tick_size(symbol: str) -> float:
