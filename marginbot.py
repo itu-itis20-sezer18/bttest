@@ -19,7 +19,7 @@ from binance.helpers import round_step_size
 
 client = Client(api_key, api_secret)
 
-client.futures_change_leverage(symbol="XLMUSDT", leverage=10)
+client.futures_change_leverage(symbol="AVAXUSDT", leverage=5)
 
 
 def get_tick_size(symbol: str) -> float:
@@ -41,7 +41,7 @@ did_make_first_order = False
 
 def has_buy_order():
     global client
-    orders = client.futures_get_open_orders(symbol='XLMUSDT')
+    orders = client.futures_get_open_orders(symbol='AVAXUSDT')
     if(len(orders) == 0):
         return False
     for order in orders:
@@ -50,7 +50,7 @@ def has_buy_order():
     return False
 def has_sell_order():
     global client
-    orders = client.futures_get_open_orders(symbol='XLMUSDT')
+    orders = client.futures_get_open_orders(symbol='AVAXUSDT')
     if(len(orders) == 0):
         return False
     for order in orders:
@@ -59,7 +59,7 @@ def has_sell_order():
     return False
 def futures_cancel_order():
     global client
-    orders = client.futures_get_open_orders(symbol='XLMUSDT')
+    orders = client.futures_get_open_orders(symbol='AVAXUSDT')
     print("order",orders)
     if(len(orders) == 0):
         print("There is no order to cancel!")
@@ -67,7 +67,7 @@ def futures_cancel_order():
     for order in orders:
         if(order["status"] == "NEW" and order["side"] == "BUY"):
             print("Order cancelling...")
-            client.futures_cancel_order(symbol="XLMUSDT",orderId=order['orderId'])
+            client.futures_cancel_order(symbol="AVAXUSDT",orderId=order['orderId'])
             return
 
 
@@ -81,22 +81,22 @@ def get_buying_price():
         return
     else:
         time.sleep(15)
-        orders = client.futures_get_all_orders(symbol='XLMUSDT')
+        orders = client.futures_get_all_orders(symbol='AVAXUSDT')
         last_order = orders[-1]
         print("Last orders: ",last_order)
         if(last_order["side"] == "SELL"):
             return
         last_order_price = last_order["price"]
-        last_order_price = (float(last_order_price)*1.004)
+        last_order_price = (float(last_order_price)*1.006)
         print("Sell order is creating at price: ",last_order_price)
-        last_order_price = get_rounded_price("XLMUSDT", last_order_price)
+        last_order_price = get_rounded_price("AVAXUSDT", last_order_price)
         order = client.futures_create_order(
-        symbol='XLMUSDT',
+        symbol='AVAXUSDT',
         side=Client.SIDE_SELL,
         type=Client.ORDER_TYPE_LIMIT,
         timeInForce='GTC',
         price=str(last_order_price),
-        quantity=5000)
+        quantity=21.5)
 
 
 
@@ -104,15 +104,15 @@ def get_buying_price():
 
 #BUY ORDER
 def buy(price):
-    price = get_rounded_price("XLMUSDT", price)
+    price = get_rounded_price("AVAXUSDT", price)
     print("Buying from price: ",price)
     order = client.futures_create_order(
-    symbol='XLMUSDT',
+    symbol='AVAXUSDT',
     side=Client.SIDE_BUY,
     type=Client.ORDER_TYPE_LIMIT,
     timeInForce='GTC',
     price=str(price),
-    quantity=5000)
+    quantity=21.5)
     #create sell order
     
 
@@ -123,7 +123,7 @@ def buy(price):
 def get_price():
     global did_make_first_order
     global min_of_fifteen
-    price = client.get_ticker(symbol='XLMUSDT')["lastPrice"]
+    price = client.get_ticker(symbol='AVAXUSDT')["lastPrice"]
     price = float(price)
     if(did_make_first_order):
         get_buying_price()
@@ -171,10 +171,10 @@ printit()
 #buy(100)
 
 
-#trades = client.get_my_trades(symbol='XLMUSDT')
+#trades = client.get_my_trades(symbol='AVAXUSDT')
 #print(trades)
 # print("Here")
-# orders = client.futures_get_open_orders(symbol='XLMUSDT')
+# orders = client.futures_get_open_orders(symbol='AVAXUSDT')
 # print("order",orders)
 
 
